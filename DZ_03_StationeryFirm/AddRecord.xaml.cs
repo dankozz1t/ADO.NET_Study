@@ -10,7 +10,7 @@ namespace DZ_03_StationeryFirm
     /// </summary>
     public partial class AddRecord : Window
     {
-        private const string connectionString = "Data Source=DANKOZZ1;Initial Catalog=StationeryFirm;Integrated Security=True";
+        private const string ConnectionString = "Data Source=DANKOZZ1;Initial Catalog=StationeryFirm;Integrated Security=True";
 
         public AddRecord(string typeTable)
         {
@@ -35,13 +35,12 @@ namespace DZ_03_StationeryFirm
 
         private void FillComboBox(ComboBox comboBox, string sql)
         {
-            SqlConnection connection = new SqlConnection(connectionString);
-            SqlCommand commandd = connection.CreateCommand();
-            SqlDataReader reader = null;
-            connection.Open();
+            SqlConnection connection = new SqlConnection(ConnectionString);
+            SqlCommand command = connection.CreateCommand();
 
-            commandd.CommandText = sql;
-            reader = commandd.ExecuteReader();
+            connection.Open();
+            command.CommandText = sql;
+            SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {

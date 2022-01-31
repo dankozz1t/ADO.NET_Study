@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="" Height="210" Width="310" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" Background="#FFA6C7D6" >
+        Title="" Height="210" Width="310" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" Background="#FF57817C" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -77,8 +77,8 @@
 
         <!-- Button -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Width="100" Content="Ок" Margin="0 0 5 0" Click="Button_Ok_Click" BorderBrush="{x:Null}" Background="#FF265D76" Foreground="White"></Button>
-            <Button Width="100" Content="Отмена" Margin="5 0 0 0"  Click="Button_Cancel_Click" BorderBrush="{x:Null}" Foreground="White" Background="#FF265D76"></Button>
+            <Button Width="100" Style="{StaticResource MainButton}" Content="Ок" Margin="0 0 5 0" Click="Button_Ok_Click" ></Button>
+            <Button Width="100" Style="{StaticResource MainButton}" Content="Отмена" Margin="5 0 0 0"  Click="Button_Cancel_Click"></Button>
         </StackPanel>
 
     </Grid>
