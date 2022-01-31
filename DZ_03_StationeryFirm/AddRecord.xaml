@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="" Height="210" Width="310" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" Background="#FF57817C" >
+        Title="" Height="210" Width="310" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" Background="#FF82B2B2" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>

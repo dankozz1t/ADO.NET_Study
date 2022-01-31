@@ -11,7 +11,7 @@
                     <Grid x:Name="grid" >
                         <Border x:Name="border" CornerRadius="5" BorderBrush="{x:Null}" BorderThickness="2" >
                             <Border.Background>
-                                <SolidColorBrush  Color="#FF1E3C30"></SolidColorBrush>
+                                <SolidColorBrush  Color="#FF29514D"></SolidColorBrush>
                             </Border.Background>
                             <ContentPresenter HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
@@ -26,7 +26,7 @@
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" TargetName="border">
                                 <Setter.Value>
-                                    <SolidColorBrush Color="#FF112E23"></SolidColorBrush>
+                                    <SolidColorBrush Color="#FF1D423E"></SolidColorBrush>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
