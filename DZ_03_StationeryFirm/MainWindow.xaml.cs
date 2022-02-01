@@ -30,7 +30,9 @@ namespace DZ_03_StationeryFirm
             TryFillComboBoxTableNames();
         }
 
-        private void TryFillComboBoxTableNames()
+        #region ComboBox_ListTableName
+
+        private void TryFillComboBoxTableNames() //Заполняет комбобокс всеми видами таблиц в базе данных
         {
             string sqlTale = "select [name] from sys.tables where [name] <> 'sysdiagrams';";
 
@@ -58,7 +60,28 @@ namespace DZ_03_StationeryFirm
             }
         }
 
-        private void TrySelect(string sql)
+        private void ListTableName_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (((ComboBox)sender).SelectedItem.ToString() == "Sales")
+            {
+                ButtonAddRecord.IsEnabled = false;
+                ButtoDeleteRecord.IsEnabled = false;
+            }
+            else
+            {
+                ButtonAddRecord.IsEnabled = true;
+                ButtoDeleteRecord.IsEnabled = true;
+            }
+
+            TrySelectForDataGrid("select * from " + ((ComboBox)sender).SelectedItem);
+            ButtonAddRecord.Content = "Добавление в " + ((ComboBox)sender).SelectedItem;
+        }
+
+        #endregion
+
+
+        #region CRUD
+        private void TrySelectForDataGrid(string sql) //Загружает таблицу в DataGrid по запросу
         {
             try
             {
@@ -80,50 +103,7 @@ namespace DZ_03_StationeryFirm
                 throw;
             }
         }
-
-        private int TrySelectFind(string sql)
-        {
-            int id;
-            try
-            {
-                connection.Open();
-                command.CommandText = sql;
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                reader.Read();
-                id = int.Parse(reader[0].ToString());
-
-                reader.Close();
-                connection.Close();
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.Message);
-                throw;
-            }
-
-            return id;
-        }
-
-        private void ListTableName_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (((ComboBox)sender).SelectedItem.ToString() == "Sales")
-            {
-                ButtonAddRecord.IsEnabled = false;
-                ButtoDeleteRecord.IsEnabled = false;
-            }
-            else
-            {
-                ButtonAddRecord.IsEnabled = true;
-                ButtoDeleteRecord.IsEnabled = true;
-            }
-
-            TrySelect("select * from " + ((ComboBox)sender).SelectedItem);
-            ButtonAddRecord.Content = "Добавление в " + ((ComboBox)sender).SelectedItem;
-        }
-
-        private void UpdateTable()
+        private void SaveTable()
         {
             if (adapter == null) return;
 
@@ -137,6 +117,11 @@ namespace DZ_03_StationeryFirm
             dataGrid.ItemsSource = MainTable.DefaultView;
 
         }
+        private void Button_Save_Click(object sender, RoutedEventArgs e)
+        {
+            SaveTable();
+        }
+
         private void Button_Add_Click(object sender, RoutedEventArgs e)
         {
             if (MainTable == null) return;
@@ -147,18 +132,111 @@ namespace DZ_03_StationeryFirm
 
             if (addRecord.ShowDialog() == true)
             {
-                DataRow row = FillRow(addRecord);
+                DataRow row = FillRow(addRecord, true);
 
                 MainTable.Rows.Add(row);
             }
 
-            if (CheckBoxUpdate.IsChecked == true)
-                UpdateTable();
+            if (CheckBoxAutoSave.IsChecked == true)
+                SaveTable();
         }
 
-        private DataRow FillRow(AddRecord addRecord)
+        private void Button_Update_Click(object sender, RoutedEventArgs e)
         {
-            DataRow row = MainTable.NewRow();
+            if (MainTable == null) return;
+
+            AddRecord addRecord = new AddRecord(ListTableName.Text);
+
+            addRecord.Title = $"Изменение в {ListTableName.Text}";
+
+            FillWindow(addRecord);
+
+            if (addRecord.ShowDialog() == true)
+            {
+                DataRow row = FillRow(addRecord, false);
+            }
+
+            if (CheckBoxAutoSave.IsChecked == true)
+                SaveTable();
+        }
+        private void Button_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            string cellValue = GetSelectedCellValue();
+            if (cellValue == null) return;
+
+            string sql = $"delete {ListTableName.Text} where {ListTableName.Text}.Id = {cellValue}";
+
+            try
+            {
+                connection.Open();
+                adapter.DeleteCommand = connection.CreateCommand();
+                adapter.DeleteCommand.CommandText = sql;
+                adapter.DeleteCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            connection.Close();
+
+            if (CheckBoxAutoSave.IsChecked == true)
+                SaveTable();
+        }
+
+        #endregion
+
+
+        #region HelpersMethod
+
+        private string GetSelectedCellValue(int columnIndex = 0) //Достает значение колонки выделеной записи. 0 - Id
+        {
+            DataGridCellInfo cellInfo = dataGrid.SelectedCells[columnIndex];
+            DataGridBoundColumn column = cellInfo.Column as DataGridBoundColumn;
+
+            if (column == null) return null;
+
+            FrameworkElement element = new FrameworkElement() { DataContext = cellInfo.Item };
+            BindingOperations.SetBinding(element, TagProperty, column.Binding);
+
+            return element.Tag.ToString();
+        }
+
+        private string TrySelectFind(string sql) //Поиск значения по запросу
+        {
+            string data;
+            try
+            {
+                connection.Open();
+                command.CommandText = sql;
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                reader.Read();
+                data = reader[0].ToString();
+
+                reader.Close();
+                connection.Close();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+                throw;
+            }
+
+            return data;
+        }
+
+        private DataRow FillRow(AddRecord addRecord, bool isAppend) //Заполняет DataRow значениями из окна добавления
+        {
+            DataRow row = null;
+            if (isAppend)
+            {
+                row = MainTable.NewRow();
+            }
+            else
+            {
+                row = MainTable.Rows[dataGrid.SelectedIndex];
+            }
 
             string tableName = ListTableName.SelectedItem.ToString();
 
@@ -184,46 +262,36 @@ namespace DZ_03_StationeryFirm
 
             return row;
         }
-        private void Button_Update_Click(object sender, RoutedEventArgs e)
-        {
-            UpdateTable();
-        }
 
-        private void Button_Delete_Click(object sender, RoutedEventArgs e)
+        private void FillWindow(AddRecord addRecord) //При изменении записи, заполняет окно старыми значениями
         {
             string cellValue = GetSelectedCellValue();
             if (cellValue == null) return;
 
-            string sql = $"delete {ListTableName.Text} where {ListTableName.Text}.Id = {cellValue}";
+            string tableName = ListTableName.SelectedItem.ToString();
 
-            try
+            if (tableName == "Types" || tableName == "Firms")
             {
-                connection.Open();
-                adapter.DeleteCommand = connection.CreateCommand();
-                adapter.DeleteCommand.CommandText = sql;
-                adapter.DeleteCommand.ExecuteNonQuery();
+                addRecord.NameTypeOrFirm.Text = TrySelectFind($"Select F.Name From {ListTableName.Text} F Where F.Id = {cellValue}");
             }
-            catch (Exception ex)
+            else if (tableName == "Managers" || tableName == "Customers")
             {
-                MessageBox.Show(ex.ToString());
+                addRecord.FirstNamePerson.Text = TrySelectFind($"Select F.FirstName From {ListTableName.Text} F Where F.Id = {cellValue}");
+                addRecord.LastNamePerson.Text = TrySelectFind($"Select F.LastName From {ListTableName.Text} F Where F.Id = {cellValue}");
+                addRecord.EmailPerson.Text = TrySelectFind($"Select F.Email From {ListTableName.Text} F Where F.Id = {cellValue}");
+                addRecord.PhonePerson.Text = TrySelectFind($"Select F.Phone From {ListTableName.Text} F Where F.Id = {cellValue}");
+
             }
-            connection.Close();
-
-            if (CheckBoxUpdate.IsChecked == true) 
-                UpdateTable();
-
-            string GetSelectedCellValue()
+            else if (tableName == "Products")
             {
-                DataGridCellInfo cellInfo = dataGrid.SelectedCells[0];
+                addRecord.NameProduct.Text = TrySelectFind($"Select F.Name From {ListTableName.Text} F Where F.Id = {cellValue}");
+                addRecord.CountProduct.Text = TrySelectFind($"Select F.Count From {ListTableName.Text} F Where F.Id = {cellValue}");
+                addRecord.PriceProduct.Text = TrySelectFind($"Select F.Price From {ListTableName.Text} F Where F.Id = {cellValue}");
 
-                DataGridBoundColumn column = cellInfo.Column as DataGridBoundColumn;
-                if (column == null) return null;
-
-                FrameworkElement element = new FrameworkElement() { DataContext = cellInfo.Item };
-                BindingOperations.SetBinding(element, TagProperty, column.Binding);
-
-                return element.Tag.ToString();
+                //Нужно привязать TypeIdProduct.SelectedIndex и FirmIdProduct.SelectedIndex к cellValue (Но по индексу КомбоБокса)
             }
         }
+
+        #endregion
     }
 }
