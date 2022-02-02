@@ -98,11 +98,13 @@ namespace DZ_03_StationeryFirm
             {
                 ButtonAddRecord.IsEnabled = false;
                 ButtoDeleteRecord.IsEnabled = false;
+                ButtonEditRecord.IsEnabled = false;
             }
             else
             {
                 ButtonAddRecord.IsEnabled = true;
                 ButtoDeleteRecord.IsEnabled = true;
+                ButtonEditRecord.IsEnabled = true;
             }
 
             fillAdapter.BeginInvoke(adapter, MainTable, AsyncCbFill, null);
