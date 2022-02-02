@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Dynamic;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -117,48 +115,6 @@ namespace DZ_03_StationeryFirm
 
         #region CRUD
 
-        private void AsyncCbUpdate(IAsyncResult ar)
-        {
-            updateAdapter.EndInvoke(ar);
-            // завершаем асинхронную операцию
-            // выводим результат
-            fillAdapter.BeginInvoke(adapter, MainTable, AsyncCbFill, null);
-        }
-        private void AsyncCbFill(IAsyncResult ar)
-        {
-            fillAdapter.EndInvoke(ar);
-
-            Action a = () =>
-            {
-                MainTable = new DataTable();
-
-                string sql = "WAITFOR DELAY '00:00:00.5'; " + "select * from " + ListTableName.SelectedItem;
-                adapter = new SqlDataAdapter(sql, ConnectionString);
-                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(adapter);
-
-                adapter.Fill(MainTable);
-                dataGrid.ItemsSource = MainTable.DefaultView;
-
-                ImageLoad.Visibility = Visibility.Collapsed;
-            };
-
-
-            // проверяем необходимость переадресации, если работа идет в другом потоке иначе бужет ошибка доступа к элементу UI интерфейса
-            if (!CheckAccess())
-            {
-                Dispatcher.Invoke(a);
-            }
-            else
-            {
-                a();
-            }
-
-        }
-
-        private void UpdateTable()
-        {
-            updateAdapter.BeginInvoke(adapter, MainTable, AsyncCbUpdate, null);
-        }
         private void Button_Update_Click(object sender, RoutedEventArgs e)
         {
             UpdateTable();
@@ -201,6 +157,7 @@ namespace DZ_03_StationeryFirm
             if (CheckBoxAutoSave.IsChecked == true)
                 UpdateTable();
         }
+        
         private void Button_Delete_Click(object sender, RoutedEventArgs e)
         {
             string cellValue = GetSelectedCellValue();
@@ -229,6 +186,49 @@ namespace DZ_03_StationeryFirm
 
 
         #region HelpersMethod
+
+        private void AsyncCbUpdate(IAsyncResult ar) //Асинхронно обновляет DataGrid
+        {
+            updateAdapter.EndInvoke(ar);
+            fillAdapter.BeginInvoke(adapter, MainTable, AsyncCbFill, null);
+        }
+
+        private void UpdateTable()
+        {
+            updateAdapter.BeginInvoke(adapter, MainTable, AsyncCbUpdate, null);
+        }
+
+        private void AsyncCbFill(IAsyncResult ar) //Асинхронно заполняет DataGrid данными по запросу
+        {
+            fillAdapter.EndInvoke(ar);
+
+            Action a = () =>
+            {
+                MainTable = new DataTable();
+
+                string sql = "WAITFOR DELAY '00:00:01'; " + "select * from " + ListTableName.SelectedItem;
+                adapter = new SqlDataAdapter(sql, ConnectionString);
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(adapter);
+
+                adapter.Fill(MainTable);
+                dataGrid.ItemsSource = MainTable.DefaultView;
+
+                ImageLoad.Visibility = Visibility.Collapsed;
+            };
+
+
+            // проверяем необходимость переадресации, если работа идет в другом потоке иначе бужет ошибка доступа к элементу UI интерфейса
+            if (!CheckAccess())
+            {
+                Dispatcher.Invoke(a);
+            }
+            else
+            {
+                a();
+            }
+
+        }
+
 
         private string GetSelectedCellValue(int columnIndex = 0) //Достает значение колонки выделеной записи. 0 - Id
         {

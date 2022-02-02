@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DZ_03_StationeryFirm"
         mc:Ignorable="d"
         Title="Канцтовары" Height="450" Width="810" Loaded="Window_Loaded" Background="#FF7EA495" Icon="icon.png" WindowStartupLocation="CenterScreen">
 
@@ -60,7 +59,6 @@
                     <Button x:Name="ButtoDeleteRecord" Height="35" Style="{StaticResource MainButton}" Margin="0 10 0 0" Content="Удалить" Click="Button_Delete_Click"/>
 
                 </StackPanel>
-
 
             </Grid>
 
