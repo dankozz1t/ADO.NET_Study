@@ -14,15 +14,33 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
+            <Image x:Name="ImageLoad"  Panel.ZIndex="2"  Visibility="Collapsed" Source="../ImageLoad.png"  Height="50" Width="50">
+                <Image.RenderTransform>
+                    <RotateTransform x:Name="rotate"
+                                     CenterX="25"
+                                     CenterY="25"/>
+                </Image.RenderTransform>
+                <Image.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimation Storyboard.TargetName="rotate"
+                                                 Storyboard.TargetProperty="Angle"
+                                                 By="360" Duration="0:0:1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Image.Triggers>
+            </Image>
 
             <Grid Grid.Column="0">
 
                 <StackPanel >
-                    <StackPanel x:Name="StackPanelForGrid" Width="600" Margin="10">
-
-                        <DataGrid x:Name="dataGrid" Height="Auto" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
+                    <StackPanel Width="600" Margin="10">
+                        <DataGrid x:Name="dataGrid" Panel.ZIndex="1" Height="Auto" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
                                   MaxHeight="388" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="True"
-                                  Margin="2"/>
+                                  Margin="2">
+                        </DataGrid>
                     </StackPanel>
                 </StackPanel>
 
@@ -31,26 +49,21 @@
             <Grid Grid.Column="1" Margin="0 7 10 0">
                 <StackPanel >
                     <TextBlock  FontWeight="Bold" FontSize="15" TextWrapping="Wrap" Text="Table:" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="ListTableName"  
-                              VerticalAlignment="Top"  SelectedIndex="0"
+                    <ComboBox x:Name="ListTableName" VerticalAlignment="Top"
                                SelectionChanged="ListTableName_SelectionChanged" BorderBrush="{x:Null}" >
                     </ComboBox>
 
                     <Button x:Name="ButtonAddRecord" Height="35"  Style="{StaticResource MainButton}" Margin="0 10 0 0" Content="Добавить" Click="Button_Add_Click" />
-                    <Button  Height="35" Style="{StaticResource MainButton}" Margin="0 10 0 0" Content="Изменить" Click="Button_Update_Click"  />
-                    <Button  Height="35" Style="{StaticResource MainButton}" Margin="0 10 0 0" Content="Сохранить" Click="Button_Save_Click"  />
-                    <CheckBox x:Name="CheckBoxAutoSave" IsChecked="True" Content="Автоматически сохранять" ></CheckBox>
+                    <Button  Height="35" Style="{StaticResource MainButton}" Margin="0 10 0 0" Content="Изменить" Click="Button_Edit_Click"  />
+                    <Button  Height="35" Style="{StaticResource MainButton}" Margin="0 10 0 0" Content="Обновить" Click="Button_Update_Click"  />
+                    <CheckBox x:Name="CheckBoxAutoSave" IsChecked="True" Content="Автоматически обновлять" ></CheckBox>
                     <Button x:Name="ButtoDeleteRecord" Height="35" Style="{StaticResource MainButton}" Margin="0 10 0 0" Content="Удалить" Click="Button_Delete_Click"/>
+
                 </StackPanel>
-            </Grid>
 
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="300"></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
 
             </Grid>
+
         </Grid>
 
     </Grid>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Dynamic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -15,8 +17,15 @@ namespace DZ_03_StationeryFirm
         private const string ConnectionString = "Data Source=DANKOZZ1;Initial Catalog=StationeryFirm;Integrated Security=True";
         private SqlConnection connection;
         private SqlCommand command;
-        private DataTable MainTable;
+        private DataTable MainTable = new DataTable();
         private SqlDataAdapter adapter;
+
+
+        private delegate void AsyncAdapter(SqlDataAdapter adapterToUpdate, DataTable tableToUpdate);
+        private AsyncAdapter updateAdapter;
+        private AsyncAdapter fillAdapter;
+
+        private Action showLoadImage;
 
         public MainWindow()
         {
@@ -27,8 +36,33 @@ namespace DZ_03_StationeryFirm
         {
             connection = new SqlConnection(ConnectionString);
             command = connection.CreateCommand();
+            adapter = new SqlDataAdapter("select * from types", ConnectionString);
             TryFillComboBoxTableNames();
+
+            // для доступа к элементам из другого потока
+            showLoadImage = () =>
+            {
+                //dataGrid.ItemsSource = null;
+                ImageLoad.Visibility = Visibility.Visible;
+            };
+
+            updateAdapter = new AsyncAdapter((a, t) =>
+            {
+                Dispatcher.Invoke(showLoadImage);
+                a.Update(t);
+            });
+
+            fillAdapter = new AsyncAdapter((a, t) =>
+            {
+                Dispatcher.Invoke(showLoadImage);
+          
+                t.Clear();
+                a.Fill(t);
+            });
+
+            ListTableName.SelectedIndex = 0;
         }
+
 
         #region ComboBox_ListTableName
 
@@ -73,7 +107,8 @@ namespace DZ_03_StationeryFirm
                 ButtoDeleteRecord.IsEnabled = true;
             }
 
-            TrySelectForDataGrid("select * from " + ((ComboBox)sender).SelectedItem);
+            fillAdapter.BeginInvoke(adapter, MainTable, AsyncCbFill, null);
+
             ButtonAddRecord.Content = "Добавление в " + ((ComboBox)sender).SelectedItem;
         }
 
@@ -81,45 +116,52 @@ namespace DZ_03_StationeryFirm
 
 
         #region CRUD
-        private void TrySelectForDataGrid(string sql) //Загружает таблицу в DataGrid по запросу
+
+        private void AsyncCbUpdate(IAsyncResult ar)
         {
-            try
+            updateAdapter.EndInvoke(ar);
+            // завершаем асинхронную операцию
+            // выводим результат
+            fillAdapter.BeginInvoke(adapter, MainTable, AsyncCbFill, null);
+        }
+        private void AsyncCbFill(IAsyncResult ar)
+        {
+            fillAdapter.EndInvoke(ar);
+
+            Action a = () =>
             {
                 MainTable = new DataTable();
 
+                string sql = "WAITFOR DELAY '00:00:00.5'; " + "select * from " + ListTableName.SelectedItem;
                 adapter = new SqlDataAdapter(sql, ConnectionString);
-                adapter.Fill(MainTable);
+                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(adapter);
 
+                adapter.Fill(MainTable);
                 dataGrid.ItemsSource = MainTable.DefaultView;
 
-                SqlCommandBuilder commandBuilder = new SqlCommandBuilder(adapter);
-                adapter.InsertCommand = commandBuilder.GetInsertCommand();
-                adapter.UpdateCommand = commandBuilder.GetUpdateCommand();
-                adapter.DeleteCommand = commandBuilder.GetDeleteCommand();
-            }
-            catch (Exception exception)
+                ImageLoad.Visibility = Visibility.Collapsed;
+            };
+
+
+            // проверяем необходимость переадресации, если работа идет в другом потоке иначе бужет ошибка доступа к элементу UI интерфейса
+            if (!CheckAccess())
             {
-                MessageBox.Show(exception.Message);
-                throw;
+                Dispatcher.Invoke(a);
             }
-        }
-        private void SaveTable()
-        {
-            if (adapter == null) return;
-
-            adapter.Update(MainTable);
-            dataGrid.ItemsSource = null;
-
-            MainTable = new DataTable(ListTableName.Text);
-
-            adapter.Fill(MainTable);
-
-            dataGrid.ItemsSource = MainTable.DefaultView;
+            else
+            {
+                a();
+            }
 
         }
-        private void Button_Save_Click(object sender, RoutedEventArgs e)
+
+        private void UpdateTable()
         {
-            SaveTable();
+            updateAdapter.BeginInvoke(adapter, MainTable, AsyncCbUpdate, null);
+        }
+        private void Button_Update_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateTable();
         }
 
         private void Button_Add_Click(object sender, RoutedEventArgs e)
@@ -138,10 +180,10 @@ namespace DZ_03_StationeryFirm
             }
 
             if (CheckBoxAutoSave.IsChecked == true)
-                SaveTable();
+                UpdateTable();
         }
 
-        private void Button_Update_Click(object sender, RoutedEventArgs e)
+        private void Button_Edit_Click(object sender, RoutedEventArgs e)
         {
             if (MainTable == null) return;
 
@@ -157,7 +199,7 @@ namespace DZ_03_StationeryFirm
             }
 
             if (CheckBoxAutoSave.IsChecked == true)
-                SaveTable();
+                UpdateTable();
         }
         private void Button_Delete_Click(object sender, RoutedEventArgs e)
         {
@@ -180,7 +222,7 @@ namespace DZ_03_StationeryFirm
             connection.Close();
 
             if (CheckBoxAutoSave.IsChecked == true)
-                SaveTable();
+                UpdateTable();
         }
 
         #endregion
@@ -222,7 +264,6 @@ namespace DZ_03_StationeryFirm
                 MessageBox.Show(exception.Message);
                 throw;
             }
-
             return data;
         }
 
