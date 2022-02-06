@@ -1,0 +1,65 @@
+﻿<Window x:Class="DZ_04_CountriesAndLINQ.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Background="#FF8D8D83">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="520"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <StackPanel >
+                    <StackPanel  Margin="10">
+                        <DataGrid x:Name="dataGrid" Panel.ZIndex="1" Height="Auto" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
+                                  MaxHeight="388" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="True"
+                                  Margin="2">
+                        </DataGrid>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Column="1" Margin="20 0 40 0">
+                <StackPanel >
+                    <TextBlock Margin="0 5 0 0" Text="EX 2" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"></TextBlock>
+                    <Button Content="All Info" Margin="1" Click="Button_ALL_INFO_Click"/>
+                    <Button Content="Countries Name" Margin="1" Click="Button_Name_Countries_Click"/>
+                    <Button Content="Countries Capital" Margin="1" Click="Button_Capital_Countries_Click"/>
+                    <Button Content="Countries EU" Margin="1" Click="Button_EU_Countries_Click"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Area " FontSize="15" FontWeight="Bold"></TextBlock>
+                        <TextBox x:Name="AreaC" Width="165" ></TextBox>
+                    </StackPanel>
+                    <Button Content="Countries Name >= Area" Margin="1" Click="Button_AreaMore_Countries_Click"/>
+
+                    <TextBlock Margin="0 5 0 0" Text="EX 3" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"></TextBlock>
+                    <Button Content="Letter A and U" Margin="1" Click="Button_Letter_AandU_Click"/>
+                    <Button Content="Start Letter A" Margin="1" Click="Button_StartLetter_A_Click"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Area From " FontSize="13" FontWeight="Bold"></TextBlock>
+                        <TextBox x:Name="AreaFrom" Width="45" ></TextBox>
+                        <TextBlock Text="Area To " FontSize="13" FontWeight="Bold"></TextBlock>
+                        <TextBox x:Name="AreaTo" Width="45" ></TextBox>
+                    </StackPanel>
+                    <Button Content="Range Area" Margin="1" Click="Button_Reange_Area_Click"/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Population " FontSize="15" FontWeight="Bold"></TextBlock>
+                        <TextBox x:Name="Population" Width="125" ></TextBox>
+                    </StackPanel>
+                    <Button Content="Countris name >= Population" Margin="1" Click="Button_Population_Countries_Click"/>
+
+                    <TextBlock Margin="0 5 0 0" Text="EX 4" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"></TextBlock>
+                    <Button Content="Top 5 Contries by Area" Margin="1" Click="Button_Top5_Area_Click"/>
+                    <Button Content="Top 5 Contries by Population" Margin="1" Click="Button_Top5_Population_Click"/>
+                    <Button Content="Top 1 Contries by Area" Margin="1" Click="Button_Top1_Area_Click"/>
+                    <TextBlock FontWeight="Bold" FontSize="12" Text="Все остальные по аналогу, легкие" TextWrapping="Wrap"></TextBlock>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
