@@ -32,7 +32,7 @@ namespace DZ_06_ModelFirstGames
 
         private void DataGridDevelopers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            developerNow = dataGridDevelopers.SelectedCells[0].Item as Developer;
+            developerNow = dataGridDevelopers.SelectedItem as Developer;
             if (developerNow != null)
             {
                 dataGridGames.ItemsSource = developerNow.Game.ToList();
@@ -107,7 +107,7 @@ namespace DZ_06_ModelFirstGames
         }
         private void DataGridGamesSelection(object sender, SelectionChangedEventArgs e)
         {
-            Game game = dataGridGames.SelectedCells[0].Item as Game;
+            Game game = dataGridGames.SelectedItem as Game;
             if (game != null)
             {
                 Year.Text = game.Year.ToString();
@@ -140,7 +140,7 @@ namespace DZ_06_ModelFirstGames
                 return;
             }
 
-            Game game = dataGridGames.SelectedCells[0].Item as Game;
+            Game game = dataGridGames.SelectedItem as Game;
             if (game != null)
             {
                 game.Year = short.Parse(Year.Text);
@@ -161,7 +161,7 @@ namespace DZ_06_ModelFirstGames
                 return;
             }
 
-            Game game = dataGridGames.SelectedCells[0].Item as Game;
+            Game game = dataGridGames.SelectedItem as Game;
             db.Games.Remove(game);
             db.SaveChanges();
             dataGridGames.ItemsSource = developerNow.Game.ToList();
