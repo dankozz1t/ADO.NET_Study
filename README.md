@@ -19,6 +19,6 @@
 ---
 ### 5. ModelFirst Entity Framework
 ![Demonstration](https://github.com/dankozz1t/ADO.NET_Study/blob/main/DZ_06_ModelFirstGames/Demonstration.gif)
-> DZ_06_ModelFirstGames [More](https://github.com/dankozz1t/ADO.NET_Study/tree/main/DZ_06_ModelFirstGames"Demonstration")
+> DZ_06_ModelFirstGames [More](https://github.com/dankozz1t/ADO.NET_Study/tree/main/DZ_06_ModelFirstGames "Demonstration")
 ---
 
