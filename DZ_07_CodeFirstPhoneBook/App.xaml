@@ -1,0 +1,9 @@
+﻿<Application x:Class="DZ_07_CodeFirstPhoneBook.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DZ_07_CodeFirstPhoneBook"
+             StartupUri="Windows/MainWindow.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
