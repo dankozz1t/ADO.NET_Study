@@ -12,10 +12,6 @@ namespace DZ_07_CodeFirstPhoneBook.DbContext
         {
             get
             {
-                string path = System.Reflection.Assembly.GetExecutingAssembly().Location;
-
-                string s = Environment.CurrentDirectory;
-
                 var directoryPath = AppDomain.CurrentDomain.BaseDirectory;
                 return Path.GetFullPath(Path.Combine(directoryPath, @"..\..\PhoneBook.mdf"));
             }
