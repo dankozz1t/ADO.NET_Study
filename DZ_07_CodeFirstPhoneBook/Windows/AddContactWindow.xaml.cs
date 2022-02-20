@@ -99,9 +99,8 @@ namespace DZ_07_CodeFirstPhoneBook.Windows
             if (openFileDialog.ShowDialog() == true)
             {
                 TextBoxPathPhoto.Text = openFileDialog.FileName;
+                ImagePhoto.Source = new BitmapImage(new Uri(TextBoxPathPhoto.Text));
             }
-
-            ImagePhoto.Source = new BitmapImage(new Uri(TextBoxPathPhoto.Text));
         }
 
         private void Button_Ok_Click(object sender, RoutedEventArgs e)
