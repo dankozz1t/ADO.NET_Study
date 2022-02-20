@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace DZ_07_CodeFirstPhoneBook.Windows
@@ -27,7 +28,7 @@ namespace DZ_07_CodeFirstPhoneBook.Windows
 
         public string Email
         {
-            get => TextBoxEmail.Text; 
+            get => TextBoxEmail.Text;
             set => TextBoxEmail.Text = value;
         }
 
@@ -45,8 +46,8 @@ namespace DZ_07_CodeFirstPhoneBook.Windows
 
         public bool IsBlocking
         {
-            get => (TextBoxIsBlocking.Text == "True");
-            set => TextBoxIsBlocking.Text = value.ToString();
+            get => ComboBoxIsBlocking.Text == "True";
+            set => ComboBoxIsBlocking.Text = value.ToString();
         }
 
         public AddContactWindow()
@@ -56,6 +57,42 @@ namespace DZ_07_CodeFirstPhoneBook.Windows
 
         private void Button_Ok_Click(object sender, RoutedEventArgs e)
         {
+            if (TextBoxFirstName.Text == "" || TextBoxLastName.Text == "" || TextBoxPhone.Text == "" ||
+                TextBoxEmail.Text == "" || TextBoxBirthday.Text == "" || TextBoxPriority.Text == "" ||
+                ComboBoxIsBlocking.Text == "")
+            {
+                MessageBox.Show("Заполните все данные!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string phoneRegex = @"^\+?\d{0,2}\-?\d{4,5}\-?\d{5,6}";
+            if (!Regex.IsMatch(TextBoxPhone.Text, phoneRegex))
+            {
+                MessageBox.Show("Неправильно введен Phone! Минимум 10 цифр, можно использовать +38 или -", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string emailRegex = @"(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)";
+            if (!Regex.IsMatch(TextBoxEmail.Text, emailRegex))
+            {
+                MessageBox.Show("Неправильно введен Email! Формат (*****@****.***)", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            DateTime birthdayRegex = new DateTime();
+            if (!DateTime.TryParse(TextBoxBirthday.Text, out birthdayRegex))
+            {
+                MessageBox.Show("Заполните правильно дату рождения. Формат (день.месяц.год) (22.02.2022)!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            short priorityRegex;
+            if (!short.TryParse(TextBoxPriority.Text, out priorityRegex))
+            {
+                MessageBox.Show("Приоритетность в цифрах!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             DialogResult = true;
         }
 
