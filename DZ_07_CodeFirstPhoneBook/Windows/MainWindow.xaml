@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:entities="clr-namespace:DZ_07_CodeFirstPhoneBook.Helpers"
         mc:Ignorable="d"
-        Title="PhoneBook" Height="600" Width="575" Background="#FF36393F" WindowStartupLocation="CenterScreen">
+        Title="PhoneBook" Height="600" Width="595" Background="#FF36393F" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <entities:ImageToSourceConverter x:Key="ImageSourceConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"></ColumnDefinition>
-            <ColumnDefinition Width="310"></ColumnDefinition>
+            <ColumnDefinition Width="330"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
@@ -38,7 +38,7 @@
         </ListBox>
 
         <ListBox Grid.Row="1" Grid.Column="1" x:Name="ListBoxContacts" 
-                 MinWidth="200" Width="335" Margin=" 0 10 0 10" 
+                 MinWidth="325" Margin=" 0 10 0 10" 
                  HorizontalAlignment="Left"
                  SelectionMode="Single" Background="#FF2F3136" SelectionChanged="ListBoxContacts_SelectionChanged" BorderBrush="{x:Null}" Foreground="White">
             <ListBox.ItemTemplate>
