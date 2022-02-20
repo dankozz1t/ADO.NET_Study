@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="" Height="330" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF344F4E">
+        Title="" Height="450" Width="320" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF344F4E">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="9*"></RowDefinition>
@@ -46,10 +46,17 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                 <TextBlock Text="IsBlocking " FontSize="16" Foreground="White"></TextBlock>
                 <ComboBox x:Name="ComboBoxIsBlocking" SelectedIndex="1" Width="55">
-                <TextBlock Text="True"></TextBlock>
-                <TextBlock Text="False"></TextBlock>
+                    <TextBlock Text="True"></TextBlock>
+                    <TextBlock Text="False"></TextBlock>
                 </ComboBox>
             </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <TextBlock Text="Photo " FontSize="16" Foreground="White"></TextBlock>
+                <TextBox x:Name="TextBoxPathPhoto" Width="190"></TextBox>
+                <Button Width="50" Margin="5 0 0 0" Content="Open" Click="Button_OpenPhoto_Click"></Button>
+            </StackPanel>
+            <Image x:Name="ImagePhoto" Height="100" Width="100"></Image>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
