@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 
 namespace DZ_07_CodeFirstPhoneBook.Windows
 {
@@ -50,9 +53,55 @@ namespace DZ_07_CodeFirstPhoneBook.Windows
             set => ComboBoxIsBlocking.Text = value.ToString();
         }
 
+        public byte[] Photo
+        {
+            get => BitmapImageToByte(ImagePhoto.Source as BitmapImage);
+
+            set
+            {
+                if (value != null)
+                    ImagePhoto.Source = ByteToBitmapImage(value);
+            }
+        }
+
         public AddContactWindow()
         {
             InitializeComponent();
+        }
+
+        #region Convert
+
+        public BitmapImage ByteToBitmapImage(byte[] array)
+        {
+            using (var ms = new System.IO.MemoryStream(array))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad; // here
+                image.StreamSource = ms;
+                image.EndInit();
+                return image;
+            }
+        }
+        public byte[] BitmapImageToByte(BitmapImage imageC)
+        {
+            MemoryStream memStream = new MemoryStream();
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(imageC));
+            encoder.Save(memStream);
+            return memStream.ToArray();
+        }
+
+        #endregion
+        private void Button_OpenPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                TextBoxPathPhoto.Text = openFileDialog.FileName;
+            }
+
+            ImagePhoto.Source = new BitmapImage(new Uri(TextBoxPathPhoto.Text));
         }
 
         private void Button_Ok_Click(object sender, RoutedEventArgs e)
