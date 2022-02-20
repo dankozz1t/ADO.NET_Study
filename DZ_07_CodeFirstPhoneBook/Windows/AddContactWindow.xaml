@@ -35,7 +35,7 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                 <TextBlock Text="Birthday " FontSize="16" Foreground="White"></TextBlock>
-                <TextBox x:Name="TextBoxBirthday" Width="65"></TextBox>
+                <TextBox x:Name="TextBoxBirthday" Width="70"></TextBox>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
@@ -45,7 +45,7 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                 <TextBlock Text="IsBlocking " FontSize="16" Foreground="White"></TextBlock>
-                <ComboBox x:Name="TextBoxIsBlocking" Width="55">
+                <ComboBox x:Name="ComboBoxIsBlocking" SelectedIndex="1" Width="55">
                 <TextBlock Text="True"></TextBlock>
                 <TextBlock Text="False"></TextBlock>
                 </ComboBox>
