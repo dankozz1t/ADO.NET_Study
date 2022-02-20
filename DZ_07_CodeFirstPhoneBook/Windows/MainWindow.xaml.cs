@@ -20,12 +20,20 @@ namespace DZ_07_CodeFirstPhoneBook
             InitializeComponent();
 
             UpdateListBoxGroup();
+            ComboBoxUpdate();
+        }
 
+        private void ComboBoxUpdate()
+        {
+            ComboBoxEditGroup.Items.Clear();
             foreach (var group in database.Groups.ToList())
             {
                 ComboBoxEditGroup.Items.Add(group.Name);
             }
+            if (ListBoxGroup.SelectedItem != null)
+                ComboBoxEditGroup.SelectedValue = (ListBoxGroup.SelectedItem as Group).Name;
         }
+
         private void Button_AllGroups_Click(object sender, RoutedEventArgs e)
         {
             ListBoxContacts.ItemsSource = database.Contacts.ToList();
@@ -178,11 +186,11 @@ namespace DZ_07_CodeFirstPhoneBook
 
         private void ListBoxGroup_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            Group gGroup = ListBoxGroup.SelectedItem as Group;
-            if (gGroup != null)
+            Group group = ListBoxGroup.SelectedItem as Group;
+            if (group != null)
             {
-                TextBoxNameGroup.Text = gGroup.Name;
-                ComboBoxEditGroup.SelectedValue = gGroup.Name;
+                TextBoxNameGroup.Text = group.Name;
+                ComboBoxEditGroup.SelectedValue = group.Name;
             }
 
             UpdateListBoxContacts();
@@ -228,13 +236,14 @@ namespace DZ_07_CodeFirstPhoneBook
                 Name = TextBoxNameGroup.Text
             };
 
+            ComboBoxEditGroup.Items.Add(group.Name);
             database.Groups.Add(group);
             database.SaveChanges();
 
             UpdateListBoxGroup();
         }
 
-        private void Button_UpdateGroup_Click(object sender, RoutedEventArgs e)
+        private void Button_EditGroup_Click(object sender, RoutedEventArgs e)
         {
             if (ListBoxGroup.SelectedItem is Group group)
             {
@@ -254,6 +263,7 @@ namespace DZ_07_CodeFirstPhoneBook
                 database.SaveChanges();
 
                 UpdateListBoxGroup();
+                ComboBoxUpdate();
             }
         }
 

@@ -84,7 +84,7 @@
                         <TextBox x:Name="TextBoxNameGroup" Width="100" Background="#FF40444B" Foreground="White" BorderBrush="{x:Null}"></TextBox>
                     </StackPanel>
                     <Button Height="30" Content="Add group" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_AddGroup_Click"></Button>
-                    <Button Height="30" Content="Edit group" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_UpdateGroup_Click"></Button>
+                    <Button Height="30" Content="Edit group" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_EditGroup_Click"></Button>
                     <Button Height="30" Content="Delete group" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_DeleteGroup_Click"></Button>
                 </StackPanel>
             </GroupBox>
