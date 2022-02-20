@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DZ_07_CodeFirstPhoneBook.Entities
+namespace DZ_07_CodeFirstPhoneBook.Helpers
 {
     public class Contact
     {
@@ -12,6 +12,7 @@ namespace DZ_07_CodeFirstPhoneBook.Entities
         public DateTime Birthday { get; set; }
         public short Priority { get; set; }
         public bool IsBlocking { get; set; }
+        public byte[] Photo { get; set; }
 
         public int GroupId { get; set; }
         public virtual Group Group { get; set; }

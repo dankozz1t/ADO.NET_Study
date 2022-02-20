@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DZ_07_CodeFirstPhoneBook.Entities
+namespace DZ_07_CodeFirstPhoneBook.Helpers
 {
     public class Group
     {
