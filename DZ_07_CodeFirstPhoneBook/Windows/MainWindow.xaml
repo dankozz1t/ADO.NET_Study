@@ -3,13 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DZ_07_CodeFirstPhoneBook"
+        xmlns:entities="clr-namespace:DZ_07_CodeFirstPhoneBook.Helpers"
         mc:Ignorable="d"
-        Title="PhoneBook" Height="600" Width="480" Background="#FFA5BB76" WindowStartupLocation="CenterScreen">
+        Title="PhoneBook" Height="600" Width="575" Background="#FF36393F" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <entities:ImageToSourceConverter x:Key="ImageSourceConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"></ColumnDefinition>
-            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="310"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
@@ -18,59 +21,82 @@
             <RowDefinition Height="15*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Button Grid.Column="0" Grid.Row="0" Content="All Contacts" FontSize="16" Margin="3" BorderBrush="{x:Null}" Background="#FF768061" Foreground="White" Click="Button_AllGroups_Click"></Button>
+        <Button Grid.Column="0" Grid.Row="0" Content="All Contacts" FontSize="16" Margin="3" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_AllGroups_Click"></Button>
+
+
         <ListBox Grid.Column="0" Grid.Row="1" x:Name="ListBoxGroup" 
                  MinWidth="150" Margin="5 0 0 5" 
                  HorizontalAlignment="Left"
-                 SelectionMode="Single" SelectionChanged="ListBoxGroup_SelectionChanged" Background="#FF7E8F5A" BorderBrush="{x:Null}">
+                 SelectionMode="Single" SelectionChanged="ListBoxGroup_SelectionChanged" Background="#FF2F3136" BorderBrush="{x:Null}" Foreground="White">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock FontSize="15" FontWeight="Bold" Text="{Binding Name}"></TextBlock>
+                        <TextBlock FontSize="16" Text="{Binding Name}"></TextBlock>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
         <ListBox Grid.Row="1" Grid.Column="1" x:Name="ListBoxContacts" 
-                 MinWidth="200" Margin=" 0 10 0 10" 
+                 MinWidth="200" Width="335" Margin=" 0 10 0 10" 
                  HorizontalAlignment="Left"
-                 SelectionMode="Single" Background="#FF7E8F5A" SelectionChanged="ListBoxContacts_SelectionChanged">
+                 SelectionMode="Single" Background="#FF2F3136" SelectionChanged="ListBoxContacts_SelectionChanged" BorderBrush="{x:Null}" Foreground="White">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="18" FontWeight="Bold" Text="{Binding FirstName}"></TextBlock>
-                            <TextBlock FontSize="18" FontWeight="Bold" Margin="5 0 0 0" Text="{Binding LastName}"></TextBlock>
-                        </StackPanel>
-                        <TextBlock FontSize="15" Margin="20 0 0 0" Text="{Binding Phone}"></TextBlock>
+                            <Image x:Name="ImageInList" Height="100" Width="100" Source="{Binding Photo, Converter={StaticResource ImageSourceConverter}}"></Image>
+                            <StackPanel Orientation="Vertical">
 
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="18" FontWeight="Bold"  Margin="5 0 0 0" Text="{Binding FirstName}"></TextBlock>
+                                    <TextBlock FontSize="18" FontWeight="Bold" Margin="5 0 0 0" Text="{Binding LastName}"></TextBlock>
+                                </StackPanel>
+
+                                <TextBlock FontSize="15" FontWeight="Bold" Margin="5 0 0 0" Text="{Binding Phone}"></TextBlock>
+                                <TextBlock FontSize="15" Margin="5 0 0 0" Text="{Binding Email}"></TextBlock>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="15" Margin="5 0 0 0" Text="Birthday "></TextBlock>
+                                    <TextBlock FontSize="15" Margin="5 0 0 0" Text="{Binding Birthday, StringFormat='{}{0:dd.MM.yyyy}'}"></TextBlock>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="15" Margin="5 0 0 0" Text="Priority "></TextBlock>
+                                    <TextBlock FontSize="15" Margin="5 0 0 0" Text="{Binding Priority}"></TextBlock>
+                                    <TextBlock FontSize="15" Margin="5 0 0 0" Text="| IsBlocking "></TextBlock>
+                                    <TextBlock FontSize="15" Margin="5 0 0 0" Text="{Binding IsBlocking}"></TextBlock>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
         <StackPanel Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Center">
-            <GroupBox Header="Управление Группой">
-                <StackPanel>
+            <GroupBox Header="Group" BorderThickness="0" Foreground="White" BorderBrush="{x:Null}" Background="#FF292B2F">
+                <StackPanel Margin="0 15 0 15">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Name " FontWeight="Bold"></TextBlock>
-                        <TextBox x:Name="TextBoxNameGroup" Width="100"></TextBox>
+                        <TextBlock Text="Name "></TextBlock>
+                        <TextBox x:Name="TextBoxNameGroup" Width="100" Background="#FF40444B" Foreground="White" BorderBrush="{x:Null}"></TextBox>
                     </StackPanel>
-                    <Button Height="30" Content="Добавить" Margin="2" BorderBrush="{x:Null}" Background="#FFDFEEC0" Foreground="#FF3D442E" Click="Button_AddGroup_Click"></Button>
-                    <Button Height="30" Content="Изменить" Margin="2" BorderBrush="{x:Null}" Background="#FFDFEEC0" Foreground="#FF3D442E" Click="Button_UpdateGroup_Click"></Button>
-                    <Button Height="30" Content="Удалить" Margin="2" BorderBrush="{x:Null}" Background="#FFDFEEC0" Foreground="#FF3D442E" Click="Button_DeleteGroup_Click"></Button>
+                    <Button Height="30" Content="Add group" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_AddGroup_Click"></Button>
+                    <Button Height="30" Content="Edit group" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_UpdateGroup_Click"></Button>
+                    <Button Height="30" Content="Delete group" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_DeleteGroup_Click"></Button>
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="Управление Контактами" Margin="0 20 0 0">
-                <StackPanel>
-                    <Button Height="30" Content="Добавить" Margin="2" BorderBrush="{x:Null}" Background="#FFDFEEC0" Foreground="#FF3D442E"  Click="Button_AddContact_Click"></Button>
-                    <Button Height="30" Content="Изменить" Margin="2" BorderBrush="{x:Null}" Background="#FFDFEEC0" Foreground="#FF3D442E" Click="Button_UpdateContact_Click"></Button>
-                    <Button Height="30" Content="Удалить" Margin="2" BorderBrush="{x:Null}" Background="#FFDFEEC0" Foreground="#FF3D442E" Click="Button_DeleteContact_Click"></Button>
+            <GroupBox Header="Contact" BorderThickness="0" Margin="0 20 0 0" Foreground="White" Background="#FF292B2F">
+                <StackPanel Margin="0 15 0 15">
+                    <Button Height="30" Content="Add contact" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White"  Click="Button_AddContact_Click"></Button>
+                    <Button Height="30" Content="Edit contact" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_UpdateContact_Click"></Button>
+                    <Button Height="30" Content="Delete contact" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_DeleteContact_Click"></Button>
 
-                    <ComboBox x:Name="ComboBoxEditGroup" Margin="2 15 2 2"></ComboBox>
-                    <Button Height="30" Content="Поменять группу" Margin="2" BorderBrush="{x:Null}" Background="#FFDFEEC0" Foreground="#FF3D442E" Click="Button_EditGroupContact_Click"></Button>
+                    <ComboBox x:Name="ComboBoxEditGroup" Margin="2 15 2 2" Foreground="Black" BorderBrush="{x:Null}" Background="{x:Null}"/>
+                    <Button Height="30" Content="Change group" Margin="2" BorderBrush="{x:Null}" Background="#FF40444B" Foreground="White" Click="Button_EditGroupContact_Click"></Button>
                 </StackPanel>
             </GroupBox>
         </StackPanel>

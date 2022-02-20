@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using System.Windows;
 using DZ_07_CodeFirstPhoneBook.DbContext;
-using DZ_07_CodeFirstPhoneBook.Entities;
+using DZ_07_CodeFirstPhoneBook.Helpers;
 using DZ_07_CodeFirstPhoneBook.Windows;
+
 
 namespace DZ_07_CodeFirstPhoneBook
 {
@@ -12,6 +13,8 @@ namespace DZ_07_CodeFirstPhoneBook
     public partial class MainWindow : Window
     {
         private PhoneBookDb database = new PhoneBookDb();
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -23,7 +26,6 @@ namespace DZ_07_CodeFirstPhoneBook
                 ComboBoxEditGroup.Items.Add(group.Name);
             }
         }
-
         private void Button_AllGroups_Click(object sender, RoutedEventArgs e)
         {
             ListBoxContacts.ItemsSource = database.Contacts.ToList();
@@ -77,7 +79,8 @@ namespace DZ_07_CodeFirstPhoneBook
                     Birthday = window.Birthday,
                     Priority = window.Priority,
                     IsBlocking = window.IsBlocking,
-                    GroupId = ((Group)ListBoxGroup.SelectedItem).Id
+                    GroupId = ((Group)ListBoxGroup.SelectedItem).Id,
+                    Photo = window.Photo
                 };
 
                 database.Contacts.Add(addContact);
@@ -114,7 +117,9 @@ namespace DZ_07_CodeFirstPhoneBook
                     Birthday = contact.Birthday,
                     Priority = contact.Priority,
                     IsBlocking = contact.IsBlocking,
+                    Photo = contact.Photo
                 };
+
 
                 if (window.ShowDialog() == true)
                 {
@@ -126,6 +131,7 @@ namespace DZ_07_CodeFirstPhoneBook
                     contact.Priority = window.Priority;
                     contact.IsBlocking = window.IsBlocking;
                     contact.GroupId = ((Group)ListBoxGroup.SelectedItem).Id;
+                    contact.Photo = window.Photo;
 
                     database.SaveChanges();
 
