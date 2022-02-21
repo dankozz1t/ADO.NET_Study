@@ -3,10 +3,52 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DZ_08_ShareOnSaleDapper"
         mc:Ignorable="d"
-        Title="Share on sale" Height="450" Width="800">
+        Title="Share on sale" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Grid Background="#FF504B64">
-        
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="260"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <StackPanel  Margin="20">
+                <DataGrid x:Name="dataGrid" IsReadOnly="True" MaxHeight="270" SelectionMode="Single" SelectionUnit="FullRow"
+                          MinHeight="230" Width="600" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="True">
+                </DataGrid>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" >
+            <StackPanel HorizontalAlignment="Left" Margin="10 0 0 0" Background="#FF2F2A42">
+                <TextBlock Text="Part 1 | Task 3" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold" Background="#FF8B82AE"></TextBlock>
+                <Button Width="150" Height="20" Content="All Users" Click="Button_AllUsers_Click" BorderBrush="{x:Null}" Background="#FFC6BDEC"></Button>
+                <Button Width="150" Height="20" Content="All Email Users" Click="Button_AllEmailUser_Click" BorderBrush="{x:Null}" Background="#FFC6BDEC"></Button>
+                <Button Width="150" Height="20" Content="Categories" Click="Button_Categories_Click" BorderBrush="{x:Null}" Background="#FFC6BDEC"></Button>
+                <Button Width="150" Height="20" Content="Shares" Click="Button_Shares_Click" BorderBrush="{x:Null}" Background="#FFC6BDEC"></Button>
+                <Button Width="150" Height="20" Content="All Cities" Click="Button_AllCities_Click" BorderBrush="{x:Null}" Background="#FFC6BDEC"></Button>
+                <Button Width="150" Height="20" Content="All Countries" Click="Button_AllCountries_Click" BorderBrush="{x:Null}" Background="#FFC6BDEC"></Button>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Left" Margin="10 0 0 0" Background="#FF2F2A42" >
+                <TextBlock Text="Part 1 | Task 4" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold" Background="#FF8B82AE"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="City " Foreground="White" Background="#FF817A9B"></TextBlock>
+                    <TextBox x:Name="TextBoxCity" Width="126"></TextBox>
+                </StackPanel>
+                <Button Width="150" Height="20" Content="Search users by city" Click="Button_SearchUsersByCity_Click" BorderBrush="{x:Null}" Background="#FFC6BDEC"></Button>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Country " Foreground="White" Background="#FF817A9B"></TextBlock>
+                    <TextBox x:Name="TextBoxCountry" Width="104"></TextBox>
+                </StackPanel>
+                <Button Width="150" Height="20" Content="Search users by country" Click="Button_SearchUsersByCountry_Click" BorderBrush="{x:Null}" Background="#FFC6BDEC" Foreground="Black"></Button>
+                <Button Width="150" Height="20" Content="Search shares by country" Click="Button_SearchSharesByShares_Click" BorderBrush="{x:Null}" Background="#FFC6BDEC" Foreground="Black"></Button>
+
+            </StackPanel>
+
+        </StackPanel>
+
     </Grid>
 </Window>
