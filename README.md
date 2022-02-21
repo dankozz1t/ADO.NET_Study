@@ -1,7 +1,7 @@
 ## My practical work on ADO.NET, Entity Framework (WPF)
 
 ---
-### 5. ModelFirst Entity Framework
+### 5. CodeFirst Entity Framework
 ![Demonstration](https://github.com/dankozz1t/ADO.NET_Study/blob/main/DZ_07_CodeFirstPhoneBook/DemonstrationPhoneBook.gif)
 > DZ_07_CodeFirstPhoneBook [More](https://github.com/dankozz1t/ADO.NET_Study/tree/main/DZ_07_CodeFirstPhoneBook "Demonstration")
 ---
