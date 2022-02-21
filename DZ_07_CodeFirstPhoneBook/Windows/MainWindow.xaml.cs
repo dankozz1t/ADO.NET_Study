@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using DZ_07_CodeFirstPhoneBook.DbContext;
 using DZ_07_CodeFirstPhoneBook.Helpers;
@@ -12,12 +13,20 @@ namespace DZ_07_CodeFirstPhoneBook
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PhoneBookDb database = new PhoneBookDb();
+        private PhoneBookDb database;
 
 
         public MainWindow()
         {
             InitializeComponent();
+
+            string path1 = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=";
+            string path2 = @"PhoneBook.mdf;Integrated Security=True;";
+            string path3 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), @"..\..\Database\");
+            DirectoryInfo directoryInfo = new DirectoryInfo(path3);
+
+            database = new PhoneBookDb($"{path1}{directoryInfo.FullName}{path2}");
+
 
             UpdateListBoxGroup();
             ComboBoxUpdate();
